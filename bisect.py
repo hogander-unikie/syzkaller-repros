@@ -17,7 +17,7 @@ def main():
                         help='Reproducer C source file')
     parser.add_argument('--reproducer_syz', required=False,
                         help='Reproducer syz file')
-    parser.add_argument('--baseline_config', required=True,
+    parser.add_argument('--baseline_config', required=False,
                         help='Baseline configuration')
     parser.add_argument('--reproducer_config', required=True,
                         help='Reproducer configuration')
@@ -113,8 +113,9 @@ def main():
               "w+") as syzkaller_commit_file:
         syzkaller_commit_file.write(syzkaller_commit)
 
-    shutil.copyfile(args.baseline_config,
-                    os.path.join(outdir, "kernel.baseline_config"))
+    if args.baseline_config:
+        shutil.copyfile(args.baseline_config,
+                        os.path.join(outdir, "kernel.baseline_config"))
     shutil.copyfile(args.reproducer_config,
                     os.path.join(outdir, "kernel.config"))
     if args.reproducer:
